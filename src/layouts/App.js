@@ -7,9 +7,9 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 
 import PrivateRoute from '../components/PrivateRoute'
-// import RootModal from '../components/modals/RootModal'
+import RootModal from '../components/modals/RootModal'
 
-// const LandingPage = lazy(() => import('../pages/Landing'))
+const LandingPage = lazy(() => import('../modules/Landing'))
 const HomePage = lazy(() => import('../modules/App/pages/Home'))
 const Auth = lazy(() => import('./Auth'))
 // const Dashboard = lazy(() => import('./Dashboard'))
@@ -36,11 +36,11 @@ const App = props => {
               </div>
             }
           >
-            {/* <RootModal /> */}
+            <RootModal />
             <Switch>
               <Route path='/auth' component={Auth} />
               {/* <Route path='/dashboard' component={Dashboard} /> */}
-              {/* <Route path='/landing' component={LandingPage} /> */}
+              <Route path='/landing' component={LandingPage} />
               <PrivateRoute path='/' component={HomePage} />
               <Redirect to='/' />
             </Switch>

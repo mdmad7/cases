@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { EuiOverlayMask } from '@elastic/eui'
-import LogoutConfrim from './logoutConfirm'
+import LogoutConfirm from './logoutConfirm'
 
 const MODAL_COMPONENTS = {
-  LOG_OUT_CONFIRM: LogoutConfrim
+  LOG_OUT_CONFIRM: LogoutConfirm
 }
 
 const RootModal = ({ modalName, modalProps, modalShow }) => {
@@ -13,11 +12,7 @@ const RootModal = ({ modalName, modalProps, modalShow }) => {
   }
 
   const SpecificModal = MODAL_COMPONENTS[modalName]
-  return (
-    <EuiOverlayMask>
-      <SpecificModal {...modalProps} modalShow={modalShow} />
-    </EuiOverlayMask>
-  )
+  return <SpecificModal {...modalProps} modalShow={modalShow} />
 }
 
 export default connect(state => state.utils)(RootModal)
