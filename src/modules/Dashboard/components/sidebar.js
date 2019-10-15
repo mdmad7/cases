@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import { EuiAvatar, EuiPopover } from '@elastic/eui'
+import { Avatar } from 'baseui/avatar'
+import { StatefulPopover } from 'baseui/popover'
+
 import { motion } from 'framer-motion'
 import { useDispatch } from 'react-redux'
 
@@ -41,10 +43,11 @@ const SideboxProfile = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 100%;
+
   background-color: rgba(39, 110, 241, 0.2);
   @media screen and (max-width: 880px) {
     background-color: transparent;
+    height: 100%;
   }
 `
 
@@ -123,6 +126,20 @@ const SideboxLink = styled(NavLink)`
   transition: all 0.2s ease-in;
   &:hover {
     background-color: rgba(39, 110, 241, 0.05);
+  }
+  &.activeClassName {
+    border-left: 2px solid #276ef1 !important;
+    background-color: rgba(39, 110, 241, 0.2);
+    color: #276ef1 !important;
+
+    @media screen and (max-width: 880px) {
+      border-left: none !important;
+      border-bottom: 2px solid #276ef1 !important;
+    }
+  }
+
+  &.activeClassName svg {
+    fill: #276ef1;
   }
 `
 
@@ -252,54 +269,46 @@ const Sidebar = props => {
             style={{ originX: '50%', originY: '50%' }}
           />
         </SidebarToggle>
-        <EuiPopover
-          id='trapFocus'
-          ownFocus
-          button={
-            <SideboxProfile onClick={() => togglePopover(!isPopoverOpen)}>
-              <EuiAvatar
-                size='m'
-                name='Michael Davis'
-                // imageUrl='https://source.unsplash.com/64x64/?cat'
-              />
-              <SideboxProfileDetails variants={profileDetails}>
+        <StatefulPopover
+          content={
+            <div style={{ minWidth: '200px', paddingBottom: '10px' }}>
+              <div
+                style={{
+                  padding: '14px 10px',
+                  backgroundColor: '#eaeaea'
+                }}
+              >
                 <SideboxProfileName>Michael Davis</SideboxProfileName>
-                <SideboxProfileEmail>
-                  admin
-                  {/* <EuiIcon type='arrowDown' /> */}
-                </SideboxProfileEmail>
-              </SideboxProfileDetails>
-            </SideboxProfile>
+                <SideboxProfileEmail>admin</SideboxProfileEmail>
+              </div>
+              <AvatarLink onClick={() => history.push('/dashboard/settings')}>
+                <WrappedUserIcon />
+                <span>Profile</span>
+              </AvatarLink>
+              <AvatarLink
+                onClick={() =>
+                  dispatch({ type: 'SHOW_MODAL', modalName: 'LOG_OUT_CONFIRM' })
+                }
+              >
+                <WrappedPowerIcon />
+                <span>Log out</span>
+              </AvatarLink>
+            </div>
           }
-          isOpen={isPopoverOpen}
-          closePopover={() => togglePopover(false)}
-          initialFocus='[id=asdf2]'
-          panelPaddingSize='none'
+          accessibilityType={'tooltip'}
         >
-          <div style={{ minWidth: '200px', paddingBottom: '10px' }}>
-            <div
-              style={{
-                padding: '14px 10px',
-                backgroundColor: '#eaeaea'
-              }}
-            >
+          <SideboxProfile onClick={() => togglePopover(!isPopoverOpen)}>
+            <Avatar
+              name='Michael Davis'
+              size='scale1000'
+              // src='https://api.adorable.io/avatars/285/10@adorable.io.png'
+            />
+            <SideboxProfileDetails variants={profileDetails}>
               <SideboxProfileName>Michael Davis</SideboxProfileName>
               <SideboxProfileEmail>admin</SideboxProfileEmail>
-            </div>
-            <AvatarLink onClick={() => history.push('/dashboard/settings')}>
-              <WrappedUserIcon />
-              <span>Profile</span>
-            </AvatarLink>
-            <AvatarLink
-              onClick={() =>
-                dispatch({ type: 'SHOW_MODAL', modalName: 'LOG_OUT_CONFIRM' })
-              }
-            >
-              <WrappedPowerIcon />
-              <span>Log out</span>
-            </AvatarLink>
-          </div>
-        </EuiPopover>
+            </SideboxProfileDetails>
+          </SideboxProfile>
+        </StatefulPopover>
       </SideboxBottom>
     </Sidebox>
   )

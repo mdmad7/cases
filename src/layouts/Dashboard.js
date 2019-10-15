@@ -5,9 +5,9 @@ import styled from 'styled-components'
 
 import Sidebar from '../modules/Dashboard/components/sidebar'
 
-const HomePage = lazy(() => import('../modules/Dashboard/pages/Home'))
-const CreatePage = lazy(() => import('../modules/Dashboard/pages/Create'))
-const SettingsPage = lazy(() => import('./DashboardSettings'))
+// const HomePage = lazy(() => import('../modules/Dashboard/pages/Home'))
+// const CreatePage = lazy(() => import('../modules/Dashboard/pages/Create'))
+// const SettingsPage = lazy(() => import('./DashboardSettings'))
 
 const AppWrapper = styled.div`
   display: flex;
@@ -47,9 +47,9 @@ const Dashboard = props => {
           }
         >
           <Switch>
-            <Route exact path='/dashboard' component={HomePage} />
-            <Route path='/dashboard/create' component={CreatePage} />
-            <Route path='/dashboard/settings' component={SettingsPage} />
+            <Route exact path='/dashboard' render={rest => <p>Home</p>} />
+            {/* <Route path='/dashboard/create' component={CreatePage} /> */}
+            {/* <Route path='/dashboard/settings' component={SettingsPage} /> */}
             <Redirect to='/' />
           </Switch>
         </Suspense>

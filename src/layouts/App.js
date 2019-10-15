@@ -12,7 +12,7 @@ import RootModal from '../components/modals/RootModal'
 const LandingPage = lazy(() => import('../modules/Landing'))
 const HomePage = lazy(() => import('../modules/App/pages/Home'))
 const Auth = lazy(() => import('./Auth'))
-// const Dashboard = lazy(() => import('./Dashboard'))
+const Dashboard = lazy(() => import('./Dashboard'))
 
 const engine = new Styletron()
 const App = props => {
@@ -39,7 +39,7 @@ const App = props => {
             <RootModal />
             <Switch>
               <Route path='/auth' component={Auth} />
-              {/* <Route path='/dashboard' component={Dashboard} /> */}
+              <Route path='/dashboard' component={Dashboard} />
               <Route path='/landing' component={LandingPage} />
               <PrivateRoute path='/' component={HomePage} />
               <Redirect to='/' />
