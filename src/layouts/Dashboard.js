@@ -2,12 +2,15 @@ import React, { Suspense, lazy } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import styled from 'styled-components'
+import { AnimatePresence } from 'framer-motion'
 
 import Sidebar from '../modules/Dashboard/components/sidebar'
 
-// const HomePage = lazy(() => import('../modules/Dashboard/pages/Home'))
-// const CreatePage = lazy(() => import('../modules/Dashboard/pages/Create'))
-// const SettingsPage = lazy(() => import('./DashboardSettings'))
+const HomePage = lazy(() => import('../modules/Dashboard/pages/Home'))
+const CreatePage = lazy(() => import('../modules/Dashboard/pages/Create'))
+const SearchPage = lazy(() => import('../modules/Dashboard/pages/Search'))
+
+const SettingsPage = lazy(() => import('./DashboardSettings'))
 
 const AppWrapper = styled.div`
   display: flex;
@@ -26,7 +29,8 @@ const MainWrapper = styled.div`
 `
 
 const Dashboard = props => {
-  const { history } = props
+  const { history, location, match } = props
+
   return (
     <AppWrapper>
       <Sidebar history={history} />
@@ -46,12 +50,15 @@ const Dashboard = props => {
             </div>
           }
         >
-          <Switch>
-            <Route exact path='/dashboard' render={rest => <p>Home</p>} />
-            {/* <Route path='/dashboard/create' component={CreatePage} /> */}
-            {/* <Route path='/dashboard/settings' component={SettingsPage} /> */}
-            <Redirect to='/' />
-          </Switch>
+          <AnimatePresence exitBeforeEnter initial={false}>
+            <Switch location={location} key={match.pathname}>
+              <Route exact path='/dashboard' component={HomePage} />
+              <Route path='/dashboard/search' component={SearchPage} />
+              <Route path='/dashboard/create' component={CreatePage} />
+              <Route path='/dashboard/settings' component={SettingsPage} />
+              <Redirect to='/' />
+            </Switch>
+          </AnimatePresence>
         </Suspense>
       </MainWrapper>
     </AppWrapper>

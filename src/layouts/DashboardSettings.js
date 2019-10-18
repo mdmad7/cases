@@ -1,9 +1,27 @@
-import React, { Suspense, lazy, useState } from 'react'
+import React, { Suspense, lazy, memo } from 'react'
 import { Switch, Route, Redirect, NavLink } from 'react-router-dom'
-import { EuiButtonIcon, EuiPopover } from '@elastic/eui'
+import { Button, KIND } from 'baseui/button'
+import Menu from 'baseui/icon/menu'
+import { StatefulPopover } from 'baseui/popover'
 import { AnimatePresence } from 'framer-motion'
 
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
+
+const transition = {
+  duration: 0.3,
+  ease: [0.43, 0.13, 0.23, 0.96]
+}
+
+const animationVariants = {
+  exit: { y: '10%', opacity: 0, transition },
+  enter: {
+    y: '0%',
+    opacity: 1,
+    transition
+  }
+  // initial: { x: 300, opacity: 0 }
+}
 
 const SettingsPage = lazy(() => import('../modules/Dashboard/pages/Settings'))
 const PasswordPage = lazy(() => import('../modules/Dashboard/pages/Password'))
@@ -25,6 +43,8 @@ const DashboardSettingsPage = styled.div`
   padding: 14px;
   flex: 1;
   position: relative;
+  width: 100%;
+  max-width: 680px;
 `
 const DashboardSettingsNav = styled.div`
   width: 200px;
@@ -38,8 +58,8 @@ const MobileLinks = styled.div`
   @media screen and (max-width: 880px) {
     display: block;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -5px;
+    right: 2px;
   }
 `
 
@@ -59,13 +79,23 @@ const SideboxLink = styled(NavLink)`
   &:hover {
     background-color: rgba(39, 110, 241, 0.05);
   }
+  &.activeClassName {
+    border-left: 2px solid #276ef1 !important;
+    background-color: rgba(39, 110, 241, 0.2);
+    color: #276ef1 !important;
+  }
 `
 
 const DashboardSettings = props => {
-  const { location } = props
-  const [isPopoverOpen, togglePopover] = useState(false)
+  const { location, match } = props
+
   return (
-    <div>
+    <motion.div
+      initial='exit'
+      animate='enter'
+      exit='exit'
+      variants={animationVariants}
+    >
       <DashboardSettingsContainer>
         <DashboardSettingsNav>
           {[
@@ -99,51 +129,44 @@ const DashboardSettings = props => {
 
         <DashboardSettingsPage>
           <MobileLinks>
-            <EuiPopover
-              id='trapFocus'
-              ownFocus
-              button={
-                <EuiButtonIcon
-                  color={'primary'}
-                  onClick={() => togglePopover(!isPopoverOpen)}
-                  iconType='boxesVertical'
-                  aria-label='Menu'
-                />
+            <StatefulPopover
+              content={
+                <>
+                  {[
+                    {
+                      title: 'Profile',
+                      itemId: '/dashboard/settings',
+                      exact: true
+                    },
+                    {
+                      title: 'Password',
+                      itemId: '/dashboard/settings/password',
+                      exact: true
+                    },
+                    {
+                      title: 'Manage Accounts',
+                      itemId: '/dashboard/settings/manage',
+                      exact: false
+                    }
+                  ].map(li => (
+                    <SideboxLink
+                      key={li.title}
+                      exact={li.exact}
+                      to={li.itemId}
+                      activeClassName='activeClassName'
+                    >
+                      {li.icon}
+                      <SideboxLinkItem>{li.title}</SideboxLinkItem>
+                    </SideboxLink>
+                  ))}
+                </>
               }
-              isOpen={isPopoverOpen}
-              closePopover={() => togglePopover(false)}
-              initialFocus='[id=asdf2]'
-              panelPaddingSize='none'
-              anchorPosition='downCenter'
+              accessibilityType={'tooltip'}
             >
-              {[
-                {
-                  title: 'Profile',
-                  itemId: '/dashboard/settings',
-                  exact: true
-                },
-                {
-                  title: 'Password',
-                  itemId: '/dashboard/settings/password',
-                  exact: true
-                },
-                {
-                  title: 'Manage Accounts',
-                  itemId: '/dashboard/settings/manage',
-                  exact: false
-                }
-              ].map(li => (
-                <SideboxLink
-                  key={li.title}
-                  exact={li.exact}
-                  to={li.itemId}
-                  activeClassName='activeClassName'
-                >
-                  {li.icon}
-                  <SideboxLinkItem>{li.title}</SideboxLinkItem>
-                </SideboxLink>
-              ))}
-            </EuiPopover>
+              <Button style={{ zIndex: 9999 }} kind={KIND.minimal}>
+                <Menu />
+              </Button>
+            </StatefulPopover>
           </MobileLinks>
 
           <Suspense
@@ -162,7 +185,7 @@ const DashboardSettings = props => {
             }
           >
             <AnimatePresence exitBeforeEnter initial={false}>
-              <Switch location={location} key={location.pathname}>
+              <Switch location={location} key={match.pathname}>
                 <Route
                   exact
                   path='/dashboard/settings'
@@ -182,8 +205,8 @@ const DashboardSettings = props => {
           </Suspense>
         </DashboardSettingsPage>
       </DashboardSettingsContainer>
-    </div>
+    </motion.div>
   )
 }
 
-export default DashboardSettings
+export default memo(DashboardSettings)

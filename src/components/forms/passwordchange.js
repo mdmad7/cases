@@ -1,13 +1,10 @@
 import React from 'react'
 import { Formik } from 'formik'
 import styled from 'styled-components'
-import {
-  EuiFieldPassword,
-  EuiForm,
-  EuiFormRow,
-  EuiButton,
-  EuiSpacer
-} from '@elastic/eui'
+import { FormControl } from 'baseui/form-control'
+import { Input } from 'baseui/input'
+import { FlexGrid, FlexGridItem } from 'baseui/flex-grid'
+import { Button } from 'baseui/button'
 import * as Yup from 'yup'
 
 import { AuthFormWrapper } from '../../styles/styled'
@@ -51,59 +48,62 @@ const PasswordChangeForm = ({ email, resetToken }) => {
         handleSubmit
       }) => (
         <NewAuthFormWrapper>
-          <EuiForm>
-            <EuiFormRow
-              fullWidth
-              label='Current password'
-              isInvalid={errors.currentPassword && touched.currentPassword}
-              error={
-                errors.currentPassword &&
-                touched.currentPassword && [`${errors.currentPassword}`]
-              }
-            >
-              <EuiFieldPassword
-                placeholder='Enter current password'
-                fullWidth
-                isInvalid={errors.currentPassword && touched.currentPassword}
-                type='password'
-                name='currentPassword'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.currentPassword}
-              />
-            </EuiFormRow>
+          <FlexGrid
+            flexGridColumnCount={1}
+            flexGridColumnGap='scale300'
+            flexGridRowGap='scale300'
+          >
+            <FlexGridItem>
+              <FormControl
+                error={
+                  errors.currentPassword &&
+                  touched.currentPassword &&
+                  errors.currentPassword
+                }
+                // label='Current Password'
+              >
+                <Input
+                  placeholder='Enter current password'
+                  error={errors.currentPassword && touched.currentPassword}
+                  type='password'
+                  name='currentPassword'
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.currentPassword}
+                />
+              </FormControl>
+            </FlexGridItem>
+            <FlexGridItem>
+              <FormControl
+                error={
+                  errors.newPassword &&
+                  touched.newPassword &&
+                  errors.newPassword
+                }
+                // label='New password'
+              >
+                <Input
+                  placeholder='Enter new password'
+                  error={errors.newPassword && touched.newPassword}
+                  type='password'
+                  name='newPassword'
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.newPassword}
+                />
+              </FormControl>
+            </FlexGridItem>
 
-            <EuiFormRow
-              fullWidth
-              label='New password'
-              isInvalid={errors.newPassword && touched.newPassword}
-              error={
-                errors.newPassword &&
-                touched.newPassword && [`${errors.newPassword}`]
-              }
-            >
-              <EuiFieldPassword
-                placeholder='Enter new password'
-                fullWidth
-                isInvalid={errors.newPassword && touched.newPassword}
-                type='password'
-                name='newPassword'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.newPassword}
-              />
-            </EuiFormRow>
-
-            <EuiSpacer />
-
-            <EuiButton
-              fill
-              style={{ display: 'block', width: '100%' }}
-              onClick={handleSubmit}
-            >
-              Change password
-            </EuiButton>
-          </EuiForm>
+            <FlexGridItem>
+              <Button
+                type='submit'
+                style={{ display: 'block', width: '100%' }}
+                onClick={handleSubmit}
+              >
+                Change password
+              </Button>
+            </FlexGridItem>
+          </FlexGrid>
         </NewAuthFormWrapper>
       )}
     </Formik>

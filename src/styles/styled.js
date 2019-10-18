@@ -15,3 +15,8 @@ export const AuthFormWrapper = styled.div`
     margin: 0 auto;
   }
 `
+
+export const PageHeader = styled.div`
+  width: 520px;
+  min-height: 220px;
+`

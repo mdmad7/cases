@@ -22,7 +22,7 @@ const ManageAccounts = () => {
   return (
     <motion.div initial='exit' animate='enter' exit='exit'>
       <motion.div variants={animationVariants}>
-        <p>ManageAccountss</p>
+        <p>Manage Accounts</p>
         <AddEditor />
         <AccountsTable />
       </motion.div>

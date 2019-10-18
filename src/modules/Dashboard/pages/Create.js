@@ -1,48 +1,31 @@
-import React, { useState } from 'react'
-import ReactQuill from 'react-quill' // ES6
+import React from 'react'
+import { motion } from 'framer-motion'
+import CreateContainer from '../containers/Create'
 
-const Create = () => {
-  const [text, handleChange] = useState('')
+const transition = {
+  duration: 0.3,
+  ease: [0.43, 0.13, 0.23, 0.96]
+}
 
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' }
-      ],
-      ['link', 'image'],
-      ['clean']
-    ]
+const animationVariants = {
+  exit: { y: '10%', opacity: 0, transition },
+  enter: {
+    y: '0%',
+    opacity: 1,
+    transition
   }
-
-  const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image'
-  ]
-
+  // initial: { x: 300, opacity: 0 }
+}
+const Create = () => {
   return (
-    <div>
-      <p>Create Page</p>
-      <ReactQuill
-        modules={modules}
-        formats={formats}
-        value={text}
-        onChange={handleChange}
-      />
-    </div>
+    <motion.div
+      initial='exit'
+      animate='enter'
+      exit='exit'
+      variants={animationVariants}
+    >
+      <CreateContainer />
+    </motion.div>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Avatar } from 'baseui/avatar'
@@ -13,6 +13,7 @@ import { ReactComponent as UserIcon } from '../../../images/svg/user.svg'
 import { ReactComponent as BookmarkIcon } from '../../../images/svg/bookmarks.svg'
 import { ReactComponent as HomeIcon } from '../../../images/svg/home.svg'
 import { ReactComponent as ArrowBackIcon } from '../../../images/svg/arrow-back.svg'
+import { ReactComponent as SearchIcon } from '../../../images/svg/lnr-magnifier.svg'
 
 const WrappedUserIcon = styled(UserIcon)`
   width: 18px;
@@ -72,7 +73,7 @@ const SideboxProfileEmail = styled.p`
 `
 
 const SidebarToggle = styled.div`
-  padding: 0px 10px 0px 14px;
+  padding: 0px 10px 0px 20px;
   @media screen and (max-width: 880px) {
     display: none !important;
   }
@@ -82,13 +83,6 @@ const SideboxBottom = styled.div`
   transition: all 0.2s ease-in;
   &:hover {
     cursor: pointer;
-  }
-  .euiPopover,
-  .euiPopover__anchor {
-    display: block;
-    @media screen and (max-width: 880px) {
-      height: 100% !important;
-    }
   }
 `
 
@@ -117,7 +111,7 @@ const SideboxMenu = styled.div`
 `
 const SideboxLink = styled(NavLink)`
   border-left: 2px solid transparent;
-  padding: 14px 10px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   font-size: 16px;
@@ -238,6 +232,12 @@ const Sidebar = props => {
             icon: <HomeIcon />
           },
           {
+            title: 'Search',
+            itemId: '/dashboard/search',
+            exact: true,
+            icon: <SearchIcon />
+          },
+          {
             title: 'Create',
             itemId: '/dashboard/create',
             exact: true,
@@ -314,4 +314,4 @@ const Sidebar = props => {
   )
 }
 
-export default Sidebar
+export default memo(Sidebar)
